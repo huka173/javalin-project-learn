@@ -12,6 +12,22 @@ public class Main {
             ctx.result("Hello, this is a users page");
         });
 
+        app.get("/hello", ctx -> {
+            var name = ctx.queryParam("name");
+
+            if (ctx.queryParamMap().size() == 0) {
+                ctx.result("Hello, World!");
+            } else {
+                if (name.isEmpty()) {
+                    ctx.result("Hello, World!");
+                } else {
+                    ctx.result("Hello, " + name + "!");
+                }
+            }
+
+            System.out.println(name);
+        });
+
         app.start(7070);
     }
 }
