@@ -2,13 +2,16 @@ package com.example;
 
 import com.example.dto.lessons.LessonPage;
 import com.example.dto.lessons.LessonsPage;
+import com.example.dto.students.StudentPage;
+import com.example.dto.students.StudentsPage;
 import com.example.model.Lesson;
+import com.example.model.Student;
 import io.javalin.Javalin;
+import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -22,6 +25,12 @@ public class Main {
                 new Lesson(5L, "Economics", "Behavioral Economics for Consumer Psychology: Explore how psycholog")
         ));
 
+        List<Student> arrStudents = new ArrayList<>(List.of(
+                new Student(1L, "Andrew", "Brown", "fwfw@gmail.com"),
+                new Student(2L, "Jack", "Cock", "123@ya.ru"),
+                new Student(3L, "Amar", "Loskich", "losk_ich@test.com")
+        ));
+
         Javalin app = Javalin.create(config -> {
             config.fileRenderer(new JavalinJte());
             config.bundledPlugins.enableDevLogging();
@@ -33,20 +42,41 @@ public class Main {
 
         app.get("/lessons", ctx -> {
             var page = new LessonsPage(arrLessons);
-            ctx.render("lessons/lessons.jte", model("page", page));
+            ctx.render("layout/lessons.jte", model("page", page));
         });
 
         app.get("/lessons/{id}", ctx -> {
             var id = ctx.pathParam("id");
-            System.out.println(id);
-            var page = new LessonPage(arrLessons.stream()
-                    .filter(elem -> elem.getId().toString().equals(id))
-                    .findFirst()
-                    .get());
+            try {
+                var page = new LessonPage(arrLessons.stream()
+                        .filter(elem -> String.valueOf(elem.getId()).equals(id))
+                        .findFirst()
+                        .get());
 
-            ctx.render("lessons/lesson.jte", model("page", page));
+                ctx.render("layout/lesson.jte", model("page", page));
+            } catch (Exception e) {
+                throw new NotFoundResponse("Not found this lesson");
+            }
         });
 
+        app.get("/students", ctx -> {
+            var page = new StudentsPage(arrStudents);
+            ctx.render("layout/students.jte", model("page", page));
+        });
+
+        app.get("/students/{id}", ctx -> {
+            String id = ctx.pathParam("id");
+            try {
+                var page = new StudentPage(arrStudents.stream()
+                        .filter(elem -> String.valueOf(elem.getId()).equals(id))
+                        .findFirst()
+                        .get());
+
+                ctx.render("layout/student.jte", model("page", page));
+            } catch (Exception e) {
+                throw new NotFoundResponse("Not found this student");
+            }
+        });
 
         app.start(7070);
     }
