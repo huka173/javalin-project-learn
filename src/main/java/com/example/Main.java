@@ -9,6 +9,8 @@ import com.example.model.Student;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +49,17 @@ public class Main {
 
         app.get("/lessons/{id}", ctx -> {
             var id = ctx.pathParam("id");
+            PolicyFactory policy = new HtmlPolicyBuilder()
+                    .allowElements("a")
+                    .allowUrlProtocols("https")
+                    .allowAttributes("href").onElements("a")
+                    .requireRelNofollowOnLinks()
+                    .toFactory();
+            String safeHTML = policy.sanitize(id);
+
             try {
                 var page = new LessonPage(arrLessons.stream()
-                        .filter(elem -> String.valueOf(elem.getId()).equals(id))
+                        .filter(elem -> String.valueOf(elem.getId()).equals(safeHTML))
                         .findFirst()
                         .get());
 
@@ -65,10 +75,18 @@ public class Main {
         });
 
         app.get("/students/{id}", ctx -> {
-            String id = ctx.pathParam("id");
+            var id = ctx.pathParam("id");
+            PolicyFactory policy = new HtmlPolicyBuilder()
+                    .allowElements("a")
+                    .allowUrlProtocols("https")
+                    .allowAttributes("href").onElements("a")
+                    .requireRelNofollowOnLinks()
+                    .toFactory();
+            String safeHTML = policy.sanitize(id);
+
             try {
                 var page = new StudentPage(arrStudents.stream()
-                        .filter(elem -> String.valueOf(elem.getId()).equals(id))
+                        .filter(elem -> String.valueOf(elem.getId()).equals(safeHTML))
                         .findFirst()
                         .get());
 
