@@ -1,6 +1,7 @@
 @import gg.jte.Content
 
 @param Content content = null
+@param Content search = null
 
 <!doctype html>
 <html lang="en">
@@ -22,6 +23,9 @@
                 <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="/lessons" class="nav-link">Lessons</a></li>
                 <li class="nav-item"><a href="/students" class="nav-link">Students</a></li>
+                @if(search != null)
+                    ${search}
+                @endif
             </ul>
         </header>
         <div class="row m-5">

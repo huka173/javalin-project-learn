@@ -43,8 +43,26 @@ public class Main {
         });
 
         app.get("/lessons", ctx -> {
-            var page = new LessonsPage(arrLessons);
-            ctx.render("layout/lessons.jte", model("page", page));
+            var search = ctx.queryParam("search");
+            PolicyFactory policy = new HtmlPolicyBuilder()
+                    .allowElements("a")
+                    .allowUrlProtocols("https")
+                    .allowAttributes("href").onElements("a")
+                    .requireRelNofollowOnLinks()
+                    .toFactory();
+            String safeHTML = policy.sanitize(search);
+
+            List<Lesson> searchArr = arrLessons.stream()
+                    .filter(elem -> {
+                        if (elem.getNameLesson().startsWith(safeHTML) || elem.getDescription().startsWith(safeHTML)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .toList();
+
+            var page = new LessonsPage(searchArr, safeHTML);
+            ctx.render("layout/lessons/lessons.jte", model("page", page));
         });
 
         app.get("/lessons/{id}", ctx -> {
@@ -63,15 +81,33 @@ public class Main {
                         .findFirst()
                         .get());
 
-                ctx.render("layout/lesson.jte", model("page", page));
+                ctx.render("layout/lessons/lesson.jte", model("page", page));
             } catch (Exception e) {
                 throw new NotFoundResponse("Not found this lesson");
             }
         });
 
         app.get("/students", ctx -> {
-            var page = new StudentsPage(arrStudents);
-            ctx.render("layout/students.jte", model("page", page));
+            var search = ctx.queryParam("search");
+            PolicyFactory policy = new HtmlPolicyBuilder()
+                    .allowElements("a")
+                    .allowUrlProtocols("https")
+                    .allowAttributes("href").onElements("a")
+                    .requireRelNofollowOnLinks()
+                    .toFactory();
+            String safeHTML = policy.sanitize(search);
+
+            List<Student> searchArr = arrStudents.stream()
+                    .filter(elem -> {
+                        if (elem.getFirstName().startsWith(safeHTML) || elem.getLastName().startsWith(safeHTML)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .toList();
+
+            var page = new StudentsPage(searchArr, safeHTML);
+            ctx.render("layout/students/students.jte", model("page", page));
         });
 
         app.get("/students/{id}", ctx -> {
@@ -90,7 +126,7 @@ public class Main {
                         .findFirst()
                         .get());
 
-                ctx.render("layout/student.jte", model("page", page));
+                ctx.render("layout/students/student.jte", model("page", page));
             } catch (Exception e) {
                 throw new NotFoundResponse("Not found this student");
             }
