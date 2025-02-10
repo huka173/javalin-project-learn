@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            @for(var elem : page.getArrLessons())
+            @for(var elem : page.getLessons())
                 <tr>
                     <th scope="row"><a href="/lessons/${elem.getId()}">${elem.getId()}</a></th>
                     <td>${elem.getNameLesson()}</td>

@@ -1,23 +1,13 @@
 package com.example.dto.lessons;
 
 import com.example.model.Lesson;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import java.util.List;
 
+@Getter
+@AllArgsConstructor
 public class LessonsPage {
     private List<Lesson> lessons;
     private String search;
-
-    public LessonsPage(List<Lesson> lessons, String search) {
-        this.lessons = lessons;
-        this.search = search;
-    }
-
-    public List<Lesson> getArrLessons() {
-        return lessons;
-    }
-
-    public String getSearch() {
-        return search;
-    }
 }
