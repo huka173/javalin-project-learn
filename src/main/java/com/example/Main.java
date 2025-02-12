@@ -8,10 +8,12 @@ import com.example.model.Lesson;
 import com.example.model.Student;
 import com.example.repository.LessonRepository;
 import com.example.repository.StudentRepository;
-import com.example.sanitizer.Sanitizer;
+import com.example.util.Sanitizer;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -90,9 +92,9 @@ public class Main {
             var lastName = ctx.formParam("lastName");
             var email = ctx.formParam("email");
 
-            var safeFirstName = Sanitizer.sanitize(firstName);
-            var safeLastName = Sanitizer.sanitize(lastName);
-            var safeEmail = Sanitizer.sanitize(email);
+            var safeFirstName = StringUtils.capitalize(Sanitizer.sanitize(firstName));
+            var safeLastName = StringUtils.capitalize(Sanitizer.sanitize(lastName));
+            var safeEmail = Sanitizer.sanitize(email.toLowerCase());
 
             var student = new Student(safeFirstName, safeLastName, safeEmail);
             StudentRepository.save(student);
