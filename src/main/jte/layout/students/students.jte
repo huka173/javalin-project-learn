@@ -16,6 +16,9 @@
     `,
     content = @`
         <h1 class="text-center p-5">Students</h1>
+        <div class="col-2 mb-5 mt-2 p-0">
+            <a href="/students/build" type="button" class="btn btn-primary">Add</a>
+        </div>
         <table class="table mb-5">
             <thead>
             <tr>
