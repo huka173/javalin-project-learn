@@ -31,7 +31,7 @@ public class Main {
 
         app.get("/lessons", ctx -> {
             var search = ctx.queryParam("search");
-            String safeHTML = Sanitizer.sanitize(search).toLowerCase();
+            String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
             List<Lesson> searchArr = LessonRepository.search(safeHTML);
             var page = new LessonsPage(searchArr, search);
@@ -42,7 +42,7 @@ public class Main {
 
         app.get("/lessons/{id}", ctx -> {
             var id = ctx.pathParam("id");
-            String safeHTML = Sanitizer.sanitize(id).toLowerCase();
+            String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 
             try {
                 var page = new LessonPage(LessonRepository.find(Long.parseLong(safeHTML)).get());
@@ -56,8 +56,8 @@ public class Main {
             var nameLesson = ctx.formParam("nameLesson");
             var description = ctx.formParam("description");
 
-            var safeName = Sanitizer.sanitize(nameLesson);
-            var safeDes = Sanitizer.sanitize(description);
+            var safeName = StringUtils.capitalize(Sanitizer.sanitize(nameLesson).strip());
+            var safeDes = StringUtils.capitalize(Sanitizer.sanitize(description).strip());
 
             var lesson = new Lesson(safeName, safeDes);
             LessonRepository.save(lesson);
@@ -66,7 +66,7 @@ public class Main {
 
         app.get("/students", ctx -> {
             var search = ctx.queryParam("search");
-            String safeHTML = Sanitizer.sanitize(search).toLowerCase();
+            String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
             List<Student> searchArr = StudentRepository.search(safeHTML);
             var page = new StudentsPage(searchArr, search);
@@ -77,7 +77,7 @@ public class Main {
 
         app.get("/students/{id}", ctx -> {
             var id = ctx.pathParam("id");
-            String safeHTML = Sanitizer.sanitize(id).toLowerCase();
+            String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 
             try {
                 var page = new StudentPage(StudentRepository.find(Long.parseLong(safeHTML)).get());
@@ -94,7 +94,7 @@ public class Main {
 
             var safeFirstName = StringUtils.capitalize(Sanitizer.sanitize(firstName));
             var safeLastName = StringUtils.capitalize(Sanitizer.sanitize(lastName));
-            var safeEmail = Sanitizer.sanitize(email.toLowerCase());
+            var safeEmail = Sanitizer.sanitize(email).toLowerCase().strip();
 
             var student = new Student(safeFirstName, safeLastName, safeEmail);
             StudentRepository.save(student);
