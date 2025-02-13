@@ -8,7 +8,7 @@ public class Sanitizer {
             return "";
         }
 
-        String allowedChars = str.replaceAll("[^a-zA-Zа-яА-Я0-9\\s@.]", "");
+        String allowedChars = str.replaceAll("[^a-zA-Zа-яА-Я0-9\\s@._\\-!&#+]", "");
 
         return Encode.forHtml(allowedChars);
     }
