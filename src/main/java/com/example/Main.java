@@ -12,7 +12,6 @@ import com.example.repository.LessonRepository;
 import com.example.repository.StudentRepository;
 import com.example.util.Sanitizer;
 import io.javalin.Javalin;
-import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.validation.ValidationException;
@@ -74,7 +73,9 @@ public class Main {
                 LessonRepository.save(lesson);
                 ctx.redirect("/lessons");
             } catch (ValidationException e) {
-                var page = new BuildLessonPage(e.getErrors());
+                var nameLesson = ctx.formParam("nameLesson");
+                var description = ctx.formParam("description");
+                var page = new BuildLessonPage(nameLesson, description, e.getErrors());
                 ctx.render("layout/lessons/build.jte", model("page", page));
             }
         });
@@ -108,12 +109,13 @@ public class Main {
         app.post("/students", ctx -> {
             try {
                 var firstName = ctx.formParamAsClass("firstName", String.class)
-                        .check(elem -> (elem.length() > 2 && elem.length() < 50), "First name entered incorrectly")
+                        .check(elem -> elem.length() > 2, "First name has few characters")
+                        .check(elem -> elem.length() < 50, "First name has many characters")
                         .get();
 
-
                 var lastName = ctx.formParamAsClass("lastName", String.class)
-                        .check(elem -> (elem.length() > 2 && elem.length() < 50), "Last name entered incorrectly")
+                        .check(elem -> elem.length() > 2, "Last name has few characters")
+                        .check(elem -> elem.length() < 50, "Last name has many characters")
                         .get();
 
                 var email = ctx.formParamAsClass("email", String.class)
@@ -128,7 +130,10 @@ public class Main {
                 StudentRepository.save(student);
                 ctx.redirect("/students");
             } catch (ValidationException e) {
-                var page = new BuildStudentPage(e.getErrors());
+                var fistName = ctx.formParam("firstName");
+                var lastName = ctx.formParam("lastName");
+                var email = ctx.formParam("email");
+                var page = new BuildStudentPage(fistName, lastName, email, e.getErrors());
                 ctx.render("layout/students/build.jte", model("page", page));
             }
 

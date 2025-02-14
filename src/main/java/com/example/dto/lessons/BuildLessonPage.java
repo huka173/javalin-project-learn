@@ -12,5 +12,7 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 public class BuildLessonPage {
+    private String nameLesson;
+    private String description;
     private Map<String, List<ValidationError<Object>>> errors;
 }

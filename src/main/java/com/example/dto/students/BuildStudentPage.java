@@ -12,5 +12,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuildStudentPage {
+    private String firstName;
+    private String lastName;
+    private String email;
     private Map<String, List<ValidationError<Object>>> errors;
 }
