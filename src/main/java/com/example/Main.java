@@ -10,6 +10,7 @@ import com.example.model.Lesson;
 import com.example.model.Student;
 import com.example.repository.LessonRepository;
 import com.example.repository.StudentRepository;
+import com.example.routes.NamedRoutes;
 import com.example.util.Sanitizer;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
@@ -28,11 +29,11 @@ public class Main {
             config.bundledPlugins.enableDevLogging();
         });
 
-        app.get("/", ctx -> {
+        app.get(NamedRoutes.homePath(), ctx -> {
             ctx.render("index.jte");
         });
 
-        app.get("/lessons", ctx -> {
+        app.get(NamedRoutes.lessonsPath(), ctx -> {
             var search = ctx.queryParam("search");
             String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
@@ -41,12 +42,12 @@ public class Main {
             ctx.render("layout/lessons/lessons.jte", model("page", page));
         });
 
-        app.get("/lessons/build", ctx -> {
+        app.get(NamedRoutes.lessonsBuildPath(), ctx -> {
             var page = new BuildLessonPage();
             ctx.render("layout/lessons/build.jte", model("page", page));
         });
 
-        app.get("/lessons/{id}", ctx -> {
+        app.get(NamedRoutes.lessonPath(), ctx -> {
             var id = ctx.pathParam("id");
             String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 
@@ -58,11 +59,12 @@ public class Main {
             }
         });
 
-        app.post("/lessons", ctx -> {
+        app.post(NamedRoutes.lessonsPath(), ctx -> {
             try {
                 var nameLesson = ctx.formParamAsClass("nameLesson", String.class)
                         .check(value -> value.length() > 2, "Name of the lesson is too short")
                         .get();
+
                 var description = ctx.formParamAsClass("description", String.class)
                         .check(value -> value.length() > 10, "Description is too small")
                         .get();
@@ -80,7 +82,7 @@ public class Main {
             }
         });
 
-        app.get("/students", ctx -> {
+        app.get(NamedRoutes.studentsPath(), ctx -> {
             var search = ctx.queryParam("search");
             String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
@@ -89,12 +91,12 @@ public class Main {
             ctx.render("layout/students/students.jte", model("page", page));
         });
 
-        app.get("/students/build", ctx -> {
+        app.get(NamedRoutes.studentsBuildPath(), ctx -> {
             var page = new BuildStudentPage();
             ctx.render("layout/students/build.jte", model("page", page));
         });
 
-        app.get("/students/{id}", ctx -> {
+        app.get(NamedRoutes.studentPath(), ctx -> {
             var id = ctx.pathParam("id");
             String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 
@@ -106,7 +108,7 @@ public class Main {
             }
         });
 
-        app.post("/students", ctx -> {
+        app.post(NamedRoutes.studentsPath(), ctx -> {
             try {
                 var firstName = ctx.formParamAsClass("firstName", String.class)
                         .check(elem -> elem.length() > 2, "First name has few characters")
