@@ -18,8 +18,12 @@ public class NamedRoutes {
     }
 
     // Маршрут вывода конкретного урока
-    public static String lessonPath() {
-        return "/lessons/{id}";
+    public static String lessonPath(Long id) {
+        return lessonPath(String.valueOf(id));
+    }
+
+    public static String lessonPath(String id) {
+        return "/lessons/" + id;
     }
 
     // Маршрут вывода всех студентов
@@ -33,7 +37,11 @@ public class NamedRoutes {
     }
 
     // Маршрут вывода конкретного студента
-    public static String studentPath() {
-        return "/students/{id}";
+    public static String studentPath(Long id) {
+        return studentPath(String.valueOf(id));
+    }
+
+    public static String studentPath(String id) {
+        return "/students/" + id;
     }
 }

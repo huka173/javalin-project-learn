@@ -1,4 +1,6 @@
 @import com.example.dto.lessons.BuildLessonPage
+@import com.example.routes.NamedRoutes
+
 @param BuildLessonPage page
 
 @template.index(
@@ -12,7 +14,7 @@
                 @endfor
             </ul>
         @endif
-        <form action="/lessons" method="post">
+        <form action="${NamedRoutes.lessonsPath()}" method="post">
             <div class="form-group py-3">
                 <label for="inputName" class="form-label">Name lesson</label>
                 <input type="text" class="form-control" id="inputName" name="nameLesson" placeholder="Enter name lesson" value="${page.getNameLesson()}" required>

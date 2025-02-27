@@ -1,4 +1,5 @@
 @import gg.jte.Content
+@import com.example.routes.NamedRoutes
 
 @param Content content = null
 @param Content search = null
@@ -20,9 +21,9 @@
                 <h1 class="fs-4">Javalin-project-learn</h1>
             </a>
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="/lessons" class="nav-link">Lessons</a></li>
-                <li class="nav-item"><a href="/students" class="nav-link">Students</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.homePath()}" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.lessonsPath()}" class="nav-link">Lessons</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.studentsPath()}" class="nav-link">Students</a></li>
                 @if(search != null)
                     ${search}
                 @endif
@@ -39,9 +40,9 @@
             <p class="col-md-4 mb-0 text-muted">Coder: Huka</p>
             <a class="d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto text-decoration-none text-muted" href="/"><span>javalin-project-learn</span></a>
             <ul class="nav col-md-4 justify-content-end">
-                <li class="nav-item"><a href="/" class="nav-link x-2 text-muted">Home</a></li>
-                <li class="nav-item"><a href="/lessons" class="nav-link x-2 text-muted">Lessons</a></li>
-                <li class="nav-item"><a href="/students" class="nav-link x-2 text-muted">Students</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.homePath()}" class="nav-link x-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.lessonsPath()}" class="nav-link x-2 text-muted">Lessons</a></li>
+                <li class="nav-item"><a href="${NamedRoutes.studentsPath()}" class="nav-link x-2 text-muted">Students</a></li>
                 <li class="nav-item">
                     <a href="https://github.com/huka173" class="nav-link x-2 text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

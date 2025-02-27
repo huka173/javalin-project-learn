@@ -47,7 +47,7 @@ public class Main {
             ctx.render("layout/lessons/build.jte", model("page", page));
         });
 
-        app.get(NamedRoutes.lessonPath(), ctx -> {
+        app.get(NamedRoutes.lessonPath("{id}"), ctx -> {
             var id = ctx.pathParam("id");
             String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 
@@ -96,7 +96,7 @@ public class Main {
             ctx.render("layout/students/build.jte", model("page", page));
         });
 
-        app.get(NamedRoutes.studentPath(), ctx -> {
+        app.get(NamedRoutes.studentPath("{id}"), ctx -> {
             var id = ctx.pathParam("id");
             String safeHTML = Sanitizer.sanitize(id).toLowerCase().strip();
 

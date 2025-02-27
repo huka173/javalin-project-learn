@@ -1,4 +1,6 @@
 @import com.example.dto.students.BuildStudentPage
+@import com.example.routes.NamedRoutes
+
 @param BuildStudentPage page
 
 @template.index(
@@ -12,7 +14,7 @@
                 @endfor
             </ul>
         @endif
-        <form action="/students" method="post">
+        <form action="${NamedRoutes.studentsPath()}" method="post">
             <div class="form-group py-3">
                 <label for="inputFirstName" class="form-label">First name</label>
                 <input type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="Enter first name" value="${page.getFirstName()}" required>
