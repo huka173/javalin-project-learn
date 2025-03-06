@@ -3,6 +3,7 @@ package com.example;
 import com.example.controller.LessonsController;
 import com.example.controller.StudentsController;
 import com.example.routes.NamedRoutes;
+import com.example.util.Log;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
@@ -10,8 +11,9 @@ public class Main {
     public static void main(String[] args) {
         Javalin app = Javalin.create(config -> {
             config.fileRenderer(new JavalinJte());
-            config.bundledPlugins.enableDevLogging();
         });
+
+        app.before(Log::log);
 
         app.get(NamedRoutes.homePath(), ctx -> ctx.render("index.jte"));
 
