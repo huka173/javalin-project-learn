@@ -1,6 +1,8 @@
 @import gg.jte.Content
 @import com.example.routes.NamedRoutes
+@import com.example.dto.MainPage
 
+@param MainPage visit = null
 @param Content content = null
 @param Content search = null
 
@@ -34,6 +36,11 @@
                 ${content}
             @else
                 <h1 class="text-center">This is test project for learn Javalin and JTE</h1>
+            @endif
+            @if(visit != null)
+                @if(!visit.isVisited())
+                    <h1 class="text-center">This message is show once</h1>
+                @endif
             @endif
         </div>
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

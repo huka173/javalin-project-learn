@@ -2,10 +2,13 @@ package com.example;
 
 import com.example.controller.LessonsController;
 import com.example.controller.StudentsController;
+import com.example.dto.MainPage;
 import com.example.routes.NamedRoutes;
 import com.example.util.Log;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
+
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +18,12 @@ public class Main {
 
         app.before(Log::log);
 
-        app.get(NamedRoutes.homePath(), ctx -> ctx.render("index.jte"));
+        app.get(NamedRoutes.homePath(), ctx -> {
+            var visited = Boolean.valueOf(ctx.cookie("visited"));
+            var page = new MainPage(visited);
+            ctx.render("index.jte", model("visit", page));
+            ctx.cookie("visited", String.valueOf(true));
+        });
 
         app.get(NamedRoutes.lessonsPath(), LessonsController::index);
 
