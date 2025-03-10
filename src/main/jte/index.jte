@@ -32,8 +32,6 @@
                 @if(mainPage != null)
                     @if(!mainPage.getUserName().isEmpty())
                         <li class="nav-item"><a class="nav-link text-muted">${mainPage.getUserName()}</a></li>
-                    @else
-                        <li class="nav-item"><a href="${NamedRoutes.sessionsBuildPath()}" class="nav-link">Create user</a></li>
                     @endif
                 @endif
             </ul>
@@ -71,8 +69,6 @@
                 @if(mainPage != null)
                     @if(!mainPage.getUserName().isEmpty())
                         <li class="nav-item"><a class="nav-link x-2 text-muted">${mainPage.getUserName()}</a></li>
-                    @else
-                        <li class="nav-item"><a href="${NamedRoutes.sessionsBuildPath()}" class="nav-link">Create user</a></li>
                     @endif
                 @endif
             </ul>
