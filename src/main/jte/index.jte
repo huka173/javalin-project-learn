@@ -2,7 +2,7 @@
 @import com.example.routes.NamedRoutes
 @import com.example.dto.MainPage
 
-@param MainPage visit = null
+@param MainPage mainPage = null
 @param Content content = null
 @param Content search = null
 
@@ -29,6 +29,13 @@
                 @if(search != null)
                     ${search}
                 @endif
+                @if(mainPage != null)
+                    @if(!mainPage.getUserName().isEmpty())
+                        <li class="nav-item"><a class="nav-link text-muted">${mainPage.getUserName()}</a></li>
+                    @else
+                        <li class="nav-item"><a href="${NamedRoutes.sessionsBuildPath()}" class="nav-link">Create user</a></li>
+                    @endif
+                @endif
             </ul>
         </header>
         <div class="row m-5">
@@ -37,10 +44,13 @@
             @else
                 <h1 class="text-center">This is test project for learn Javalin and JTE</h1>
             @endif
-            @if(visit != null)
-                @if(!visit.isVisited())
+            @if(mainPage != null)
+                @if(!mainPage.getVisited())
                     <h1 class="text-center">This message is show once</h1>
                 @endif
+            @endif
+            @if(mainPage != null)
+                    <h1 class="text-center">Hello, ${mainPage.getUserName()}</h1>
             @endif
         </div>
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -58,6 +68,13 @@
                         </svg>
                     </a>
                 </li>
+                @if(mainPage != null)
+                    @if(!mainPage.getUserName().isEmpty())
+                        <li class="nav-item"><a class="nav-link x-2 text-muted">${mainPage.getUserName()}</a></li>
+                    @else
+                        <li class="nav-item"><a href="${NamedRoutes.sessionsBuildPath()}" class="nav-link">Create user</a></li>
+                    @endif
+                @endif
             </ul>
         </footer>
     </div>

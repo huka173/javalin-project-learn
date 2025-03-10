@@ -44,4 +44,12 @@ public class NamedRoutes {
     public static String studentPath(String id) {
         return "/students/" + id;
     }
+
+    public static String sessionsBuildPath() {
+        return "/sessions/build";
+    }
+
+    public static String sessionsPath() {
+        return "/sessions";
+    }
 }

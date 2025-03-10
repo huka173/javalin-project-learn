@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.controller.LessonsController;
+import com.example.controller.SessionsController;
 import com.example.controller.StudentsController;
 import com.example.dto.MainPage;
 import com.example.routes.NamedRoutes;
@@ -19,10 +20,14 @@ public class Main {
         app.before(Log::log);
 
         app.get(NamedRoutes.homePath(), ctx -> {
-            var visited = Boolean.valueOf(ctx.cookie("visited"));
-            var page = new MainPage(visited);
-            ctx.render("index.jte", model("visit", page));
-            ctx.cookie("visited", String.valueOf(true));
+            if (ctx.sessionAttribute("nickname") != null) {
+                var visited = Boolean.valueOf(ctx.cookie("visited"));
+                var page = new MainPage(visited, ctx.sessionAttribute("nickname"));
+                ctx.render("index.jte", model("mainPage", page));
+                ctx.cookie("visited", String.valueOf(true));
+            } else {
+                ctx.redirect("/sessions/build");
+            }
         });
 
         app.get(NamedRoutes.lessonsPath(), LessonsController::index);
@@ -40,6 +45,10 @@ public class Main {
         app.get(NamedRoutes.studentPath("{id}"), StudentsController::show);
 
         app.post(NamedRoutes.studentsPath(), StudentsController::create);
+
+        app.get(NamedRoutes.sessionsBuildPath(), SessionsController::build);
+
+        app.post(NamedRoutes.sessionsPath(), SessionsController::create);
 
         app.start(7070);
     }
