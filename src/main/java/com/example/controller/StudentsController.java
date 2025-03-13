@@ -21,7 +21,7 @@ public class StudentsController {
         String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
         List<Student> searchArr = StudentRepository.search(safeHTML);
-        var page = new StudentsPage(searchArr, search);
+        var page = new StudentsPage(searchArr, search, ctx.consumeSessionAttribute("flashStudent"));
         ctx.render("layout/students/students.jte", model("page", page));
     }
 
@@ -64,6 +64,7 @@ public class StudentsController {
 
             var student = new Student(safeFirstName, safeLastName, safeEmail);
             StudentRepository.save(student);
+            ctx.sessionAttribute("flashStudent", "Student has been created!");
             ctx.redirect("/students");
         } catch (ValidationException e) {
             var fistName = ctx.formParam("firstName");

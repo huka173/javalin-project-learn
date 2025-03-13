@@ -21,7 +21,7 @@ public class LessonsController {
         String safeHTML = Sanitizer.sanitize(search).toLowerCase().strip();
 
         List<Lesson> searchArr = LessonRepository.search(safeHTML);
-        var page = new LessonsPage(searchArr, search);
+        var page = new LessonsPage(searchArr, search, ctx.consumeSessionAttribute("flashLesson"));
         ctx.render("layout/lessons/lessons.jte", model("page", page));
     }
 
@@ -56,6 +56,7 @@ public class LessonsController {
             var safeDes = StringUtils.capitalize(Sanitizer.sanitize(description).strip());
             var lesson = new Lesson(safeName, safeDes);
             LessonRepository.save(lesson);
+            ctx.sessionAttribute("flashLesson", "Lesson has been created!");
             ctx.redirect("/lessons");
         } catch (ValidationException e) {
             var nameLesson = ctx.formParam("nameLesson");

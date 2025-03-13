@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
+@Getter
 public class StudentsPage {
     private List<Student> students;
     private String search;
+    private String flash;
 }

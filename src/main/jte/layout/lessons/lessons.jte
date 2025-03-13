@@ -1,5 +1,6 @@
 @import com.example.dto.lessons.LessonsPage
 @import com.example.routes.NamedRoutes
+
 @param LessonsPage page
 
 @template.index(
@@ -17,6 +18,9 @@
     `,
     content = @`
         <h1 class="text-center p-5">Lessons</h1>
+        @if(page.getFlash() != null)
+            <p class="p-0 text-success">${page.getFlash()}</p>
+        @endif
         <div class="col-2 mb-5 mt-2 p-0">
             <a href="${NamedRoutes.lessonsBuildPath()}" type="button" class="btn btn-primary">Add</a>
         </div>
